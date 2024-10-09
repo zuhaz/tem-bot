@@ -1,0 +1,17 @@
+{
+  "name": "tex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "author": "Zuhaz",
+  "license": "ISC",
+  "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1",
+    "chalk": "^4.1.2",
+    "discord.js": "^14.12.1",
+    "mongoose": "^7.4.3"
+  }
+}
