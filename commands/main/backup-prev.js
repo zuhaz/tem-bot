@@ -135,8 +135,15 @@ module.exports = {
         roleResult += `@${role.name}\n`;
       }
 
-      channelResult = `\`\`\`${channelResult}\`\`\``;
-      roleResult = `\`\`\`${roleResult}\`\`\``;
+      // Truncate channel and role data if they exceed the limit
+      const truncateData = (data, limit = 1000) => {
+        if (data.length <= limit) return data;
+        return data.substring(0, limit) + "...";
+      };
+
+      channelResult = truncateData(`\`\`\`${channelResult}\`\`\``);
+      roleResult = truncateData(`\`\`\`${roleResult}\`\`\``);
+
       const embed = new EmbedBuilder()
         .setColor("#2b2d31")
         .setTitle("Preview of the Backup")
@@ -147,22 +154,28 @@ module.exports = {
         .addFields(
           {
             name: "Created By:",
-            value: `<@${allData.CreatorId}>`,
+            value: `<@${backupsData.CreatorId}>`,
             inline: true,
           },
           {
             name: "Created At:",
-            value: `<t:${allData.CreatedAt}:R>`,
+            value: `<t:${backupsData.CreatedAt}:R>`,
             inline: true,
           },
           {
             name: "Bans:",
-            value: `\`${allData.Bans !== null ? allData.Bans.length : "0"}\``,
+            value: `\`${backupsData.Bans?.length ?? "0"}\``,
             inline: false,
-          },
-          { name: "Channels:", value: `${channelResult}`, inline: true },
-          { name: "Roles:", value: `${roleResult}`, inline: true }
+          }
         );
+
+      // Add channels and roles fields separately to handle potential length issues
+      if (channelResult.length > 0) {
+        embed.addFields({ name: "Channels:", value: channelResult });
+      }
+      if (roleResult.length > 0) {
+        embed.addFields({ name: "Roles:", value: roleResult });
+      }
 
       return embed;
     }
