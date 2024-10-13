@@ -1,0 +1,4 @@
+{
+  "token": "your_discord_bot_token",
+  "mongoKey": "your_mongo_db_uri"
+}
